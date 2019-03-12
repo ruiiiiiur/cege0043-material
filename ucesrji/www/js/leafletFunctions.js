@@ -23,6 +23,8 @@ var myPolygon = L.polygon([
 
 // create a variable that will hold the XMLHttpRequest() - this must be done outside a function so that all the functions can use the same variable
 var client;
+var earthquakes;
+
 // create the code to get the Earthquakes data using an XMLHttpRequest
 function getEarthquakes() {
 	client = new XMLHttpRequest();
@@ -43,6 +45,7 @@ function earthquakeResponse() {
 function loadEarthquakelayer(earthquakedata) {
 	// convert the text to JSON
 	var earthquakejson = JSON.parse(earthquakedata);
+	earthquakes = earthquakejson;
 	// add the JSON layer onto the map - it will appear using the default icons
 	earthquakelayer = L.geoJson(earthquakejson).addTo(mymap);
 	// change the map zoom so that all the data is shown
