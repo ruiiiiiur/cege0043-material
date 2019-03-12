@@ -1,0 +1,5 @@
+funciton trackAndCircle(){
+
+	trackLocation();
+	addPointLinePoly();
+}
