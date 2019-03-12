@@ -1,7 +1,6 @@
 var userMarker;
 
 function trackLocation() {
-	alert('getting 1');
 	if (navigator.geolocation) {
 	navigator.geolocation.watchPosition(showPosition);
 	} else {
@@ -9,7 +8,6 @@ function trackLocation() {
 	}
 	}
 function showPosition(position) {
-	alert('getting 2');
 	if (userMarker){mymap.removeLayer(userMarker);}
 	//alert("I am tracking your location");
 	//document.getElementById('showLocation').innerHTML = "Latitude: " + position.coords.latitude +
@@ -20,9 +18,8 @@ function showPosition(position) {
 
 
 function getDistance() {
-	alert('getting 3');
 	// getDistanceFromPoint is the function called once the distance has been found
-	navigator.geolocation.getCurrentPosition(getDistanceFromPoint);
+	navigator.geolocation.getCurrentPosition(getDistanceFromMultiplePoints);
 	}
 function getDistanceFromPoint(position) {
 	// find the coordinates of a point using this website:
@@ -50,4 +47,19 @@ function calculateDistance(lat1, lon1, lat2, lon2, unit) {
 	if (unit=="K") { dist = dist * 1.609344 ;} // convert miles to km
 	if (unit=="N") { dist = dist * 0.8684 ;} // convert miles to nautical miles
 	return dist;
+	}
+
+function getDistanceFromMultiplePoints(position) {
+	var minDistance = 100000000000;
+	var closestQuake = "";
+	for(var i = 0; i < earthquakes.features.length; i++) {
+	var obj = earthquakes.features[i];
+	var distance = calculateDistance(position.coords.latitude,
+	position.coords.longitude,obj.geometry.coordinates[0], obj.geometry.coordinates[1], 'K');
+	if (distance < minDistance){
+	minDistance = distance;
+	closestQuake = obj.properties.place;
+	}
+	}
+	alert("Earthquake: " + closestQuake + " is distance " + minDistance + "away");
 	}
